@@ -2,11 +2,11 @@
 
 use Framework\Http\Request;
 
-$filePath = __DIR__ . '/vendor/autoload.php';
+$filePath = __DIR__ . '/../vendor/autoload.php';
 
 require $filePath;
 
 
-$request = new Request;
+$request = new Request();
 
-phpinfo();
+echo "Hello " . ($request->getQueryGet()['name'] ?? 'quest');
