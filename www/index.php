@@ -1,12 +1,14 @@
 <?php
 
-use Framework\Http\Request;
+use Framework\Http\RequestFactory;
 
 $filePath = __DIR__ . '/../vendor/autoload.php';
 
 require $filePath;
 
 
-$request = new Request();
+$request = RequestFactory::fromGlobals();
 
-echo "Hello " . ($request->getQueryGet()['name'] ?? 'quest');
+$name = ($request->getQueryParams()['name'] ?? 'quest');
+
+$response = (new Response("Hello, $name " . '!'))->withHeaders();
