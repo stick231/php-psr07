@@ -1,13 +1,17 @@
 <?php
 namespace Framework\Http;
 
-class Response{
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\MessageInterface;
+
+class Response implements ResponseInterface{
     private $headers = [];
     private $body;
     private $statusCode;
     private $reasonPhrase = "";
 
-    public function __construct($body, $status = 200)
+    public function __construct($body, int $status = 200)
     {
         $this->body = $body;
         $this->statusCode = $status;
@@ -22,31 +26,32 @@ class Response{
         "500" => "Internal Server Error"
     ];
     
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
     
-    public function withBody($body)
+    public function withBody(string $body): MessageInterface
     {
-        $new = clone $this;
-        $new = $new->body;
-        return $new;
+        $new = clone $this; 
+        $new->body = $body; 
+        return $new; 
     }
 
-    public function getStatuscode()
+    public function getStatuscode():int
     {
         return $this->statusCode;
     }
 
-    public function getReasonPhrase()
+    public function getReasonPhrase():string
     {
         if(!$this->reasonPhrase && isset(self::$phrases[$this->statusCode])){
             $this->reasonPhrase = self::$phrases[$this->statusCode]; 
         }
+        return $this->reasonPhrase;
     }
 
-    public function withStatus($status, $reasonPhrase):self
+    public function withStatus(int $status,string $reasonPhrase = ""): ResponseInterface
     {
         $new = clone $this;
         $new->statusCode = $status;
@@ -64,7 +69,7 @@ class Response{
         return isset($this->headers[$header]);
     }
 
-    public function getHeader($header)
+    public function getHeader($header) :array
     {
         if(!$this->hasHeader($header))
         {
@@ -73,7 +78,7 @@ class Response{
         return $this->headers[$header];
     }
 
-    public function withHeaders($header, $value):self
+    public function withHeader($header, $value):self
     {
         $new = clone $this;
         if($this->hasHeader($header))
@@ -82,5 +87,29 @@ class Response{
         }
         $new->headers[$header] = $value;
         return $new;
+    }
+    public function getProtocolVersion(): string
+    {
+        return '1.1';
+    }
+
+    public function withProtocolVersion(string $version): self
+    {
+        return $this; 
+    }
+
+    public function getHeaderLine(string $name): string
+    {
+        return '';
+    }
+
+    public function withAddedHeader(string $name, $value): self
+    {
+        return $this;
+    }
+
+    public function withoutHeader(string $name): self
+    {
+        return $this;
     }
 }

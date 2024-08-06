@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitec30d52280d74f92bd7a741259719ebd
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\Http\\Message\\' => 17,
+        ),
         'F' => 
         array (
             'Framework\\' => 10,
@@ -14,6 +18,10 @@ class ComposerStaticInitec30d52280d74f92bd7a741259719ebd
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'Framework\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Framework',
